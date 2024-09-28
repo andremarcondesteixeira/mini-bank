@@ -2,7 +2,6 @@ package com.minibank.AccountsService;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,28 +11,31 @@ import java.util.List;
 @RequestMapping("/api/accounts")
 public class AccountsController {
 
-    @Autowired
-    private AccountsService accountsService;
+    private final AccountsService accountsService;
+
+    public AccountsController(AccountsService accountsService) {
+        this.accountsService = accountsService;
+    }
 
     @GetMapping
-    public List<AccountModel> getAllAccounts() {
+    public List<AccountDTO> getAllAccounts() {
         return accountsService.getAllAccounts();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AccountModel> getAccountById(@PathVariable Long id) {
+    public ResponseEntity<AccountDTO> getAccountById(@PathVariable Long id) {
         return accountsService.getAccountById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public AccountModel createAccount(@RequestBody AccountModel account) {
+    public AccountDTO createAccount(@RequestBody AccountDTO account) {
         return accountsService.createAccount(account);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AccountModel> updateAccount(@PathVariable Long id, @RequestBody AccountModel accountDetails) {
+    public ResponseEntity<AccountDTO> updateAccount(@PathVariable Long id, @RequestBody AccountDTO accountDetails) {
         return ResponseEntity.ok(accountsService.updateAccount(id, accountDetails));
     }
 

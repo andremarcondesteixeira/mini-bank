@@ -8,10 +8,12 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "account")
 public class AccountModel {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "branch_number", nullable = false, unique = true, length = 20)
+    private String branchNumber;
 
     @Column(name = "account_number", nullable = false, unique = true, length = 20)
     private String accountNumber;
@@ -19,28 +21,49 @@ public class AccountModel {
     @Column(name = "account_holder_name", nullable = false, length = 100)
     private String accountHolderName;
 
+    @Column(name = "account_holder_document", nullable = false, length = 20)
+    private String accountHolderDocument;
+
     @Column(name = "account_type", nullable = false, length = 10)
     private String accountType;
 
     @Column(name = "balance", nullable = false)
     private BigDecimal balance;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "balance_currency", nullable = false)
+    private String balanceCurrency;
+
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    public AccountModel() {}
+    public AccountModel() {
+    }
 
-    public AccountModel(Long id, LocalDateTime updatedAt, String accountNumber, String accountHolderName, String accountType, BigDecimal balance, LocalDateTime createdAt) {
+    public AccountModel(
+            Long id,
+            String branchNumber,
+            String accountNumber,
+            String accountHolderName,
+            String accountHolderDocument,
+            String accountType,
+            BigDecimal balance,
+            String balanceCurrency,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt
+    ) {
         this.id = id;
-        this.updatedAt = updatedAt;
+        this.branchNumber = branchNumber;
         this.accountNumber = accountNumber;
         this.accountHolderName = accountHolderName;
+        this.accountHolderDocument = accountHolderDocument;
         this.accountType = accountType;
         this.balance = balance;
+        this.balanceCurrency = balanceCurrency;
         this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public Long getId() {
@@ -49,6 +72,14 @@ public class AccountModel {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getBranchNumber() {
+        return branchNumber;
+    }
+
+    public void setBranchNumber(String branchNumber) {
+        this.branchNumber = branchNumber;
     }
 
     public String getAccountNumber() {
@@ -67,6 +98,14 @@ public class AccountModel {
         this.accountHolderName = accountHolderName;
     }
 
+    public String getAccountHolderDocument() {
+        return accountHolderDocument;
+    }
+
+    public void setAccountHolderDocument(String accountHolderDocument) {
+        this.accountHolderDocument = accountHolderDocument;
+    }
+
     public String getAccountType() {
         return accountType;
     }
@@ -81,6 +120,14 @@ public class AccountModel {
 
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
+    }
+
+    public String getBalanceCurrency() {
+        return balanceCurrency;
+    }
+
+    public void setBalanceCurrency(String balanceCurrency) {
+        this.balanceCurrency = balanceCurrency;
     }
 
     public LocalDateTime getCreatedAt() {
